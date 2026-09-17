@@ -1,0 +1,192 @@
+/* ============================================================
+   effects.css — экран входа, появление блоков, тост, кастомный курсор
+   ============================================================ */
+
+/* ---------- экран входа ---------- */
+
+.enter {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: linear-gradient(160deg, rgba(76, 29, 149, 0.94), rgba(7, 4, 13, 0.97));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: opacity 0.5s var(--ease), visibility 0.5s var(--ease);
+}
+
+.enter[hidden] {
+  display: none;
+}
+
+.enter.is-leaving {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.enter__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  max-width: 340px;
+}
+
+.enter__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+.enter__title {
+  font-size: clamp(38px, 12vw, 58px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  text-shadow: 0 0 30px rgba(var(--accent-rgb), 0.65);
+}
+
+.enter__hint,
+.enter__note {
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+.enter__note {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--muted-2);
+}
+
+.enter__btn {
+  position: relative;
+  margin-top: 6px;
+  padding: 13px 40px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--accent);
+  border-radius: 999px;
+  overflow: hidden;
+  transition: transform 0.22s var(--ease), box-shadow 0.3s var(--ease);
+  box-shadow: 0 0 26px -4px rgba(var(--accent-rgb), 1);
+}
+
+.enter__btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 40px -2px rgba(var(--accent-rgb), 1);
+}
+
+.enter__btn:active {
+  transform: scale(0.97);
+}
+
+.enter__btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.55), transparent 70%);
+  transform: translateX(-120%);
+  animation: btn-shine 2.8s ease-in-out infinite;
+}
+
+@keyframes btn-shine {
+  0% {
+    transform: translateX(-120%);
+  }
+  55%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+/* ---------- появление блоков ---------- */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+
+body.is-ready [data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+body.is-ready [data-reveal]:nth-child(1) {
+  transition-delay: 0.05s;
+}
+
+body.is-ready [data-reveal]:nth-child(2) {
+  transition-delay: 0.11s;
+}
+
+body.is-ready [data-reveal]:nth-child(3) {
+  transition-delay: 0.17s;
+}
+
+/* ---------- тост ---------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  top: 22px;
+  z-index: 60;
+  padding: 10px 18px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: var(--accent);
+  border-radius: 999px;
+  box-shadow: 0 14px 34px -16px rgba(var(--accent-rgb), 1);
+  opacity: 0;
+  transform: translate(-50%, -18px);
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+  max-width: calc(100vw - 32px);
+  text-align: center;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.toast--error {
+  background: var(--hot);
+  color: #fff;
+  box-shadow: 0 14px 34px -16px rgba(var(--hot-rgb), 1);
+}
+
+/* ---------- подсказка плеера без трека ---------- */
+
+.player.is-empty .player__meta {
+  opacity: 0.5;
+}
+
+/* ---------- уважение к настройкам системы ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
